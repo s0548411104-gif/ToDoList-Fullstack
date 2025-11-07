@@ -1,0 +1,20 @@
+# ===== React / Node =====
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# ===== .NET / C# =====
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# ===== OS / IDE =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
