@@ -8,6 +8,7 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddCors(options =>
 {
@@ -62,6 +63,7 @@ app.MapDelete("/tasks/{id}", async (int id, ToDoDbContext db) =>
     return Results.NoContent();
 });
 
+app.MapGet("/", () => "AuthServer API is running");
 app.Run();
 
 public class Item
@@ -81,3 +83,7 @@ public class ToDoDbContext : DbContext
         modelBuilder.Entity<Item>().ToTable("Items");
     }
 }
+
+
+
+

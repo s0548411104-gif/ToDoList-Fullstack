@@ -10,11 +10,12 @@ yarn.lock
 build/
 dist/
 
-.env
-
 .DS_Store
 .vscode/
 
 .vs/
 bin/
 obj/
+
+
+

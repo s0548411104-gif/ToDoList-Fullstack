@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const apiUrl = "http://localhost:5000";
+const apiUrl = process.env.REACT_APP_API_URL;
 
-export default {
+const apiService = {
   getTasks: async () => {
     const result = await axios.get(`${apiUrl}/tasks`);
     return result.data;
@@ -15,7 +15,7 @@ export default {
   },
 
   setCompleted: async (id, isComplete) => {
-    const updatedTask = { name: "", isComplete }; 
+    const updatedTask = { isComplete }; 
     await axios.put(`${apiUrl}/tasks/${id}`, updatedTask);
   },
 
@@ -23,3 +23,5 @@ export default {
     await axios.delete(`${apiUrl}/tasks/${id}`);
   }
 };
+
+export default apiService;
