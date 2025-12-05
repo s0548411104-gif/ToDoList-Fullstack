@@ -1,48 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace TodoApi.Models;
-public class User
+namespace TodoApi.Models
 {
-    public int Id { get; set; }
-    public string Username { get; set; } = null!;
-    public string Password { get; set; } = null!;
-}
-
-public partial class ToDoDbContext : DbContext
-{
-     public DbSet<Item> Items { get; set; }
-    public DbSet<User> Users { get; set; }
-    public ToDoDbContext()
+    public partial class ToDoDbContext : DbContext
     {
-    }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<User> Users { get; set; }
 
-    public ToDoDbContext(DbContextOptions<ToDoDbContext> options)
-        : base(options)
-    {
-    }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySql("server=localhost;user=root;password=sf0556735750!;database=tododb", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.44-mysql"));
+        public ToDoDbContext() { }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder
-            .UseCollation("utf8mb4_0900_ai_ci")
-            .HasCharSet("utf8mb4");
+        public ToDoDbContext(DbContextOptions<ToDoDbContext> options)
+            : base(options) { }
 
-        modelBuilder.Entity<Item>(entity =>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseMySql("server=localhost;user=root;password=sf0556735750!;database=tododb",
+                    Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.44-mysql"));
+            }
+        }
 
-            entity.ToTable("item");
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Item>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.ToTable("Items");
+                entity.Property(e => e.Name).HasMaxLength(100);
+            });
 
-            entity.Property(e => e.Name).HasMaxLength(100);
-        });
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.ToTable("Users");
+                entity.Property(e => e.Username).HasMaxLength(50);
+                entity.Property(e => e.Password).HasMaxLength(100);
+            });
 
-        OnModelCreatingPartial(modelBuilder);
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using TodoApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = Environment.GetEnvironmentVariable("MYSQL_CONNECTION")
-                       ?? "server=bkacmwvlhryotuqgxtvo-mysql.services.clever-cloud.com;port=3306;user=u6jr8p6odvabl1tc;password=RitAQmT3LSwXYnPb0yti;database=bkacmwvlhryotuqgxtvo;";
-
+var connectionString = Environment.GetEnvironmentVariable("ToDoDB");
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
@@ -14,9 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-    });
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 });
 
 var app = builder.Build();
@@ -28,8 +25,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors();
 
-app.MapGet("/tasks", async (ToDoDbContext db) =>
-    await db.Items.ToListAsync());
+app.MapGet("/tasks", async (ToDoDbContext db) => await db.Items.ToListAsync());
 
 app.MapGet("/tasks/{id}", async (int id, ToDoDbContext db) =>
     await db.Items.FindAsync(id) is Item item ? Results.Ok(item) : Results.NotFound());
@@ -63,24 +59,6 @@ app.MapDelete("/tasks/{id}", async (int id, ToDoDbContext db) =>
     return Results.NoContent();
 });
 
-app.MapGet("/", () => "AuthServer API is running");
+app.MapGet("/", () => "ToDo API is running");
 
 app.Run();
-
-public class Item
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public bool IsComplete { get; set; }
-}
-
-public class ToDoDbContext : DbContext
-{
-    public ToDoDbContext(DbContextOptions<ToDoDbContext> options) : base(options) { }
-    public DbSet<Item> Items { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Item>().ToTable("Items");
-    }
-}
