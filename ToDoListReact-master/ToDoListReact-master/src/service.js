@@ -1,47 +1,30 @@
 import axios from "axios";
 
-// לקיחת כתובת מה־.env והסרת סלש בסוף אם יש
-const apiUrl = process.env.REACT_APP_API_URL?.replace(/\/$/, "");
+// קבלת כתובת ה־API מה־.env
+const apiUrl = process.env.REACT_APP_API_URL;
+
+// ודאי שאין // כפול בכתובת
+const normalizeUrl = (url) => url.replace(/\/+$/, "");
 
 const apiService = {
   getTasks: async () => {
-    try {
-      const result = await axios.get(`${apiUrl}/tasks`);
-      return result.data;
-    } catch (error) {
-      console.error("שגיאה ב־getTasks:", error);
-      throw error;
-    }
+    const result = await axios.get(`${normalizeUrl(apiUrl)}/tasks`);
+    return result.data;
   },
 
   addTask: async (name) => {
-    try {
-      const newTask = { name, isComplete: false };
-      const result = await axios.post(`${apiUrl}/tasks`, newTask);
-      return result.data;
-    } catch (error) {
-      console.error("שגיאה ב־addTask:", error);
-      throw error;
-    }
+    const newTask = { name, isComplete: false };
+    const result = await axios.post(`${normalizeUrl(apiUrl)}/tasks`, newTask);
+    return result.data;
   },
 
   setCompleted: async (id, isComplete) => {
-    try {
-      const updatedTask = { isComplete };
-      await axios.put(`${apiUrl}/tasks/${id}`, updatedTask);
-    } catch (error) {
-      console.error("שגיאה ב־setCompleted:", error);
-      throw error;
-    }
+    const updatedTask = { isComplete };
+    await axios.put(`${normalizeUrl(apiUrl)}/tasks/${id}`, updatedTask);
   },
 
   deleteTask: async (id) => {
-    try {
-      await axios.delete(`${apiUrl}/tasks/${id}`);
-    } catch (error) {
-      console.error("שגיאה ב־deleteTask:", error);
-      throw error;
-    }
+    await axios.delete(`${normalizeUrl(apiUrl)}/tasks/${id}`);
   }
 };
 
