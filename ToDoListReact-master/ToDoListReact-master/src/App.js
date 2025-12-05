@@ -10,8 +10,19 @@ function App() {
   }, []);
 
   const refreshTasks = async () => {
-    const data = await service.getTasks();
-    setTasks(data);
+    try {
+      const data = await service.getTasks();
+
+      console.log("הנתונים שהתקבלו:", data);
+
+      if (Array.isArray(data)) {
+        setTasks(data);
+      } else {
+        console.error("הנתונים שהתקבלו אינם מערך:", data);
+      }
+    } catch (error) {
+      console.error("שגיאה בהבאת המשימות:", error);
+    }
   };
 
   const handleAddTask = async () => {
@@ -46,20 +57,24 @@ function App() {
       </div>
 
       <ul>
-        {tasks.map((task) => (
-          <li key={task.id} style={{ marginBottom: "5px" }}>
-            <span
-              style={{
-                textDecoration: task.isComplete ? "line-through" : "none",
-                cursor: "pointer",
-              }}
-              onClick={() => handleToggleComplete(task)}
-            >
-              {task.name}
-            </span>{" "}
-            <button onClick={() => handleDelete(task)}>❌ מחק</button>
-          </li>
-        ))}
+        {tasks && tasks.length > 0 ? (
+          tasks.map((task) => (
+            <li key={task.id} style={{ marginBottom: "5px" }}>
+              <span
+                style={{
+                  textDecoration: task.isComplete ? "line-through" : "none",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleToggleComplete(task)}
+              >
+                {task.name}
+              </span>{" "}
+              <button onClick={() => handleDelete(task)}>❌ מחק</button>
+            </li>
+          ))
+        ) : (
+          <p>אין משימות להציג</p>
+        )}
       </ul>
     </div>
   );
