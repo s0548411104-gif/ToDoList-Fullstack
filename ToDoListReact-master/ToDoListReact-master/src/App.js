@@ -69,7 +69,7 @@ function App() {
               >
                 {task.name}
               </span>{" "}
-              <button onClick={() => handleDelete(task)}>❌ מחק</button>
+              <button onClick={() => handleDelete(task)}></button>
             </li>
           ))
         ) : (

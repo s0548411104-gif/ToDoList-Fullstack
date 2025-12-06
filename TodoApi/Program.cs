@@ -27,13 +27,13 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// בדיקה של חיבור למסד הנתונים בזמן Startup
+// בדיקה אסינכרונית של חיבור למסד הנתונים בזמן Startup
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ToDoDbContext>();
     try
     {
-        if (db.Database.CanConnect())
+        if (await db.Database.CanConnectAsync())
             Console.WriteLine("? Connected to DB successfully!");
         else
             Console.WriteLine("? Could not connect to DB.");
@@ -41,7 +41,10 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         Console.WriteLine("? Failed to connect to DB:");
-        Console.WriteLine(ex.ToString()); // מדפיס את כל הפירוט של השגיאה
+        Console.WriteLine(ex.Message);
+        if (ex.InnerException != null)
+            Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+        Console.WriteLine(ex.StackTrace);
     }
 }
 
@@ -62,9 +65,20 @@ app.MapGet("/tasks/{id}", async (int id, ToDoDbContext db) =>
 
 app.MapPost("/tasks", async (Item item, ToDoDbContext db) =>
 {
-    db.Items.Add(item);
-    await db.SaveChangesAsync();
-    return Results.Created($"/tasks/{item.Id}", item);
+    try
+    {
+        db.Items.Add(item);
+        await db.SaveChangesAsync();
+        return Results.Created($"/tasks/{item.Id}", item);
+    }
+    catch (DbUpdateException ex)
+    {
+        Console.WriteLine("Error saving entity:");
+        Console.WriteLine(ex.Message);
+        if (ex.InnerException != null)
+            Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+        return Results.Problem("Failed to save task.");
+    }
 });
 
 app.MapPut("/tasks/{id}", async (int id, Item updatedItem, ToDoDbContext db) =>
@@ -75,8 +89,19 @@ app.MapPut("/tasks/{id}", async (int id, Item updatedItem, ToDoDbContext db) =>
     item.Name = updatedItem.Name;
     item.IsComplete = updatedItem.IsComplete;
 
-    await db.SaveChangesAsync();
-    return Results.NoContent();
+    try
+    {
+        await db.SaveChangesAsync();
+        return Results.NoContent();
+    }
+    catch (DbUpdateException ex)
+    {
+        Console.WriteLine("Error updating entity:");
+        Console.WriteLine(ex.Message);
+        if (ex.InnerException != null)
+            Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+        return Results.Problem("Failed to update task.");
+    }
 });
 
 app.MapDelete("/tasks/{id}", async (int id, ToDoDbContext db) =>
@@ -85,8 +110,20 @@ app.MapDelete("/tasks/{id}", async (int id, ToDoDbContext db) =>
     if (item is null) return Results.NotFound();
 
     db.Items.Remove(item);
-    await db.SaveChangesAsync();
-    return Results.NoContent();
+
+    try
+    {
+        await db.SaveChangesAsync();
+        return Results.NoContent();
+    }
+    catch (DbUpdateException ex)
+    {
+        Console.WriteLine("Error deleting entity:");
+        Console.WriteLine(ex.Message);
+        if (ex.InnerException != null)
+            Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+        return Results.Problem("Failed to delete task.");
+    }
 });
 
 app.MapGet("/", () => "ToDo API is running");
