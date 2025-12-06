@@ -1,22 +1,17 @@
-/* =========================================================
-   עיצוב Dark Neumorphism (סגול ניאון בהיר) - אלמנטים צפים על רקע סגול בהיר
-   ========================================================= */
 
-/* ייבוא פונט Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --color-base: #5E4675; /* **צבע הרקע הראשי של האלמנטים (סגול בינוני-בהיר יותר)** */
-  --color-text: #F0F0F0; /* טקסט בהיר */
-  --color-primary: #FF00FF; /* מג'נטה ניאון! (נשאר זוהר) */
+  --color-base: #5E4675; 
+  --color-text: #F0F0F0; 
+  --color-primary: #FF00FF; 
   --color-accent: #DA70D6; 
   --color-success: #6BFF6B;
-  --color-shadow-dark: #433155; /* צל כהה יותר (מותאם לבסיס החדש) */
-  --color-shadow-light: #7B5C95; /* צל בהיר יותר (מותאם לבסיס החדש) */
+  --color-shadow-dark: #433155;  
+  --color-shadow-light: #7B5C95; 
   --radius-neumo: 12px;
 }
 
-/* --- גוף הדף ורקע כללי --- */
 * {
   box-sizing: border-box;
 }
@@ -24,7 +19,6 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif, -apple-system, BlinkMacSystemFont;
-  /* **רקע גרדיאנט סגול בהיר ומגוון** */
   background: linear-gradient(135deg, #2D1A44 0%, #47325D 35%, #594372 70%, #6F5589 100%);
   color: var(--color-text);
   display: flex;
@@ -35,7 +29,6 @@ body {
   line-height: 1.5;
 }
 
-/* --- המיכל הראשי של האפליקציה (ביטול הבלוק הראשי!) --- */
 #root > div {
   background-color: transparent !important;
   width: 100%;
@@ -47,7 +40,6 @@ body {
   animation: fadeIn 0.6s ease-out;
 }
 
-/* --- כותרת ראשית --- */
 h1 {
   text-align: center;
   font-weight: 700;
@@ -59,7 +51,6 @@ h1 {
   justify-content: center;
   align-items: center;
   gap: 15px;
-  /* אפקט טקסט תלת-ממדי קל */
   text-shadow: 1px 1px 1px var(--color-shadow-light), 
                -1px -1px 1px var(--color-shadow-dark);
 }
@@ -70,21 +61,17 @@ h1::before {
 }
 
 
-/* --- אזור הוספת משימה (השדה והכפתור צפים) --- */
 #root > div > div:first-of-type {
   display: flex;
   gap: 15px;
   margin-bottom: 40px !important;
-  /* מוסיפים את הריפוד שהיה קודם לבלוק הראשי! */
   padding: 25px; 
   border-radius: 20px;
-  background-color: var(--color-base); /* צבע סגול בהיר יותר */
-  /* יוצרים לבלוק הזה אפקט ניאו-מורפיזם קל כדי להדגיש את אזור הקלט */
+  background-color: var(--color-base); 
   box-shadow: 4px 4px 8px var(--color-shadow-dark), 
              -4px -4px 8px var(--color-shadow-light);
 }
 
-/* שדה הקלט - שקוע פנימה */
 input[type="text"] {
   flex-grow: 1;
   padding: 18px 25px;
@@ -95,7 +82,6 @@ input[type="text"] {
   background-color: var(--color-base);
   color: var(--color-text);
   outline: none;
-  /* **אפקט הניאו-מורפיזם - צל פנימי!** */
   box-shadow: inset 4px 4px 8px var(--color-shadow-dark), 
               inset -4px -4px 8px var(--color-shadow-light);
   transition: all 0.3s;
@@ -106,10 +92,9 @@ input[type="text"]:focus {
               inset -2px -2px 5px var(--color-shadow-light);
 }
 input[type="text"]::placeholder {
-    color: #B4A9C4; /* מותאם לגוון הבהיר יותר */
+    color: #B4A9C4; 
 }
 
-/* כפתור הוספה - בולט החוצה */
 #root > div > div:first-of-type > button {
   background-color: var(--color-base);
   color: var(--color-primary);
@@ -120,7 +105,6 @@ input[type="text"]::placeholder {
   font-size: 1.15rem;
   border-radius: 12px;
   cursor: pointer;
-  /* **אפקט הניאו-מורפיזם - צל חיצוני!** */
   box-shadow: 4px 4px 8px var(--color-shadow-dark), 
              -4px -4px 8px var(--color-shadow-light);
   transition: all 0.2s;
@@ -129,18 +113,15 @@ input[type="text"]::placeholder {
 #root > div > div:first-of-type > button:hover {
   color: var(--color-text);
   background-color: var(--color-primary);
-  /* לחיצה מזויפת - שינוי הצללים הפוך */
   box-shadow: inset 4px 4px 8px var(--color-shadow-dark), 
               inset -4px -4px 8px var(--color-shadow-light);
   transform: scale(0.98);
 }
 
-/* כפתור הוספה - הוספת אמוג'י */
 #root > div > div:first-of-type > button::before {
     content: '➕ '; 
 }
 
-/* --- רשימת המשימות --- */
 ul {
   list-style-type: none;
   padding: 0;
@@ -148,7 +129,6 @@ ul {
   margin-bottom: 0;
 }
 
-/* פריט משימה בודד (li) - בולט החוצה וצף על הרקע הכללי */
 li {
   background-color: var(--color-base);
   border: none;
@@ -159,20 +139,17 @@ li {
   align-items: center;
   margin-bottom: 20px !important;
   transition: all 0.3s ease;
-  /* צל חיצוני עדין */
   box-shadow: 4px 4px 8px var(--color-shadow-dark), 
              -4px -4px 8px var(--color-shadow-light);
   position: relative;
 }
 
 li:hover {
-  /* מעבר קל למצב 'שקוע' בריחוף */
   box-shadow: inset 4px 4px 8px var(--color-shadow-dark), 
               inset -4px -4px 8px var(--color-shadow-light);
 }
 
 
-/* הטקסט של המשימה (span) */
 li span {
   font-size: 1.3rem;
   flex-grow: 1;
@@ -181,7 +158,6 @@ li span {
   font-weight: 500;
 }
 
-/* קו צבעוני בצד - משתמש בצבע ההדגשה הראשי */
 li:before {
     content: '';
     position: absolute;
@@ -189,35 +165,29 @@ li:before {
     left: 0;
     width: 6px;
     height: 100%;
-    background-color: var(--color-primary); /* מג'נטה ניאון */
+    background-color: var(--color-primary);
     border-radius: 15px 0 0 15px;
     transition: background-color 0.3s;
 }
 
-/* סגנון למשימה שבוצעה (completed) */
 li span[style*="line-through"] {
-    color: #9A8FB3 !important; /* גוון סגול אפור עדין, בהיר יותר */
-    font-weight: 400;
+    color: #9A8FB3 !important; 
 }
-/* שינוי הקו הצדדי למשימה שבוצעה לצבע הירוק */
 li:has(span[style*="line-through"]):before {
-    background-color: var(--color-success); /* ירוק ליים */
+    background-color: var(--color-success); 
 }
 
 
-/* הוספת אמוג'י למשימה לא גמורה */
 li:not(:has(span[style*="line-through"])) span::before {
-    content: '📝 '; /* דף כתיבה/רשימה */
+    content: '📝 '; 
     margin-left: 5px;
 }
-/* הוספת אמוג'י למשימה גמורה */
 li:has(span[style*="line-through"]) span::before {
-    content: '✅ '; /* וי ירוק ברור */
+    content: '✅ '; 
     margin-left: 5px;
 }
 
 
-/* כפתור מחיקה - קטן ושקוע */
 li button {
   background-color: var(--color-base);
   border: none;
@@ -227,7 +197,6 @@ li button {
   cursor: pointer;
   font-size: 1.2rem;
   transition: all 0.2s;
-  /* צל קל הנותן תחושת 'שקע' */
   box-shadow: inset 2px 2px 5px var(--color-shadow-dark), 
               inset -2px -2px 5px var(--color-shadow-light);
   width: 45px;
@@ -238,19 +207,16 @@ li button {
 }
 
 li button:hover {
-  color: #FF5A5A; /* אדום מחיקה בהיר */
-  /* שינוי קל לצל חיצוני בריחוף */
+  color: #FF5A5A; 
   box-shadow: 3px 3px 6px var(--color-shadow-dark), 
               -3px -3px 6px var(--color-shadow-light);
 }
 
-/* כפתור המחיקה - הוספת אמוג'י */
 li button::before {
-    content: '✖️'; /* סימן X ברור למחיקה */
+    content: '✖️'; 
     font-size: 0.8em;
 }
 
-/* הודעת אין משימות */
 p {
   text-align: center;
   color: #9A8FB3;
@@ -260,11 +226,10 @@ p {
 }
 
 p::before {
-    content: '✨ '; /* נצנוץ כשאין משימות */
+    content: '✨ ';
 }
 
 
-/* --- אנימציה --- */
 @keyframes fadeIn {
   from {
     opacity: 0;
