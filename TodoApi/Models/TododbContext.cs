@@ -12,13 +12,10 @@ namespace TodoApi.Models
         public ToDoDbContext(DbContextOptions<ToDoDbContext> options)
             : base(options) { }
 
+        // הסרנו את החיבור הקבוע ל־localhost
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySql("server=localhost;user=root;password=sf0556735750!;database=tododb",
-                    Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.44-mysql"));
-            }
+            // הכל נעשה דרך Program.cs
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
