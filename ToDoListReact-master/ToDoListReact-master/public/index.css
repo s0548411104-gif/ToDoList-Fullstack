@@ -19,7 +19,7 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif, -apple-system, BlinkMacSystemFont;
-  background: linear-gradient(135deg, #2D1A44 0%, #47325D 35%, #594372 70%, #6F5589 100%);
+  background: linear-gradient(135deg, #2D1A44 0%, #47325D 35%, #594372 70%, #0a090b 100%);
   color: var(--color-text);
   display: flex;
   justify-content: center;
